@@ -1,0 +1,892 @@
+from data import Classes
+from data import Weapons
+from data import Locations
+from data import Weapon_Upgrades
+
+import random
+
+
+def choose_player():
+
+    playable_characters = []
+
+    for name in Classes:
+
+        if Classes[name]["type"] == "playable":
+
+            playable_characters.append(name)
+
+    print("Wybierz bohatera:")
+
+    for i in range(len(playable_characters)):
+
+        print(i + 1, "-", playable_characters[i])
+
+    choice = int(input("Podaj numer bohatera: "))
+
+    return playable_characters[choice - 1]
+
+
+def choose_free_locations():
+
+    location_names = list(Locations.keys())
+
+    chosen_locations = []
+
+    while True:
+
+        print("Wybierz miejscówkę:")
+
+        for i in range(len(location_names)):
+
+            print(i + 1, "-", location_names[i])
+
+        print(len(location_names) + 1, "- Start gry")
+
+        choice = int(input("Wybierz opcję: "))
+
+        if choice == len(location_names) + 1:
+
+            break
+
+        chosen_locations.append(
+            location_names[choice - 1]
+        )
+
+    return chosen_locations
+
+
+def get_story_locations(player):
+
+    if player == "Leon S. Kennedy":
+
+        return [
+            "Posterunek policji RPD",
+            "Laboratorium Umbrella"
+        ]
+
+    elif player == "Chris Redfield":
+
+        return [
+            "Posiadłość Spencera"
+        ]
+
+    elif player == "Jill Valentine":
+
+        return [
+            "Ulice Raccoon City",
+            "Posiadłość Spencera"
+        ]
+
+    elif player == "Ethan Winters":
+
+        return choose_free_locations()
+
+    elif player == "Snake eater":
+
+        return choose_free_locations()
+
+    else:
+
+        return []
+
+
+def get_upgrade_limit(weapon_name):
+
+    if weapon_name == "Matylda" or weapon_name == "Glock-18":
+
+        return 2
+
+    elif weapon_name == "MP-7":
+
+        return 3
+
+    elif weapon_name == "Strzelba pompka":
+
+        return 2
+
+    elif weapon_name == "Karabin Cobra":
+
+        return 3
+
+    elif weapon_name == "Karabin snajperski":
+
+        return 3
+
+    elif weapon_name == "Lightning Hawk":
+
+        return 3
+
+    return 0
+
+
+def buy_weapon(
+    gold,
+    inventory,
+    weapon_name
+):
+
+    price = Weapons[weapon_name]["price"]
+
+    if weapon_name in inventory["weapons"]:
+
+        print("Masz już tę broń")
+
+        return gold, inventory
+
+    if gold >= price:
+
+        inventory["weapons"][weapon_name] = []
+
+        gold -= price
+
+        print("Kupiłeś", weapon_name)
+
+    else:
+
+        print("Nie masz wystarczająco gold")
+
+    return gold, inventory
+
+
+def buy_upgrade(
+    gold,
+    inventory
+):
+
+    if len(inventory["weapons"]) == 0:
+
+        print("Nie masz żadnej broni")
+
+        return gold, inventory
+
+    weapon_names = list(
+        inventory["weapons"].keys()
+    )
+
+    print("Wybierz broń do ulepszenia:")
+
+    for i in range(len(weapon_names)):
+
+        weapon_name = weapon_names[i]
+
+        print(
+            i + 1,
+            "-",
+            weapon_name,
+            "ulepszenia:",
+            inventory["weapons"][weapon_name]
+        )
+
+    weapon_choice = int(
+        input("Wybierz broń: ")
+    )
+
+    chosen_weapon = (
+        weapon_names[weapon_choice - 1]
+    )
+
+    limit = get_upgrade_limit(
+        chosen_weapon
+    )
+
+    if (
+        len(
+            inventory["weapons"][chosen_weapon]
+        )
+        >= limit
+    ):
+
+        print(
+            "Ta broń ma już maksymalną liczbę ulepszeń"
+        )
+
+        return gold, inventory
+
+    upgrade_names = list(
+        Weapon_Upgrades.keys()
+    )
+
+    print("Wybierz ulepszenie:")
+
+    for i in range(len(upgrade_names)):
+
+        upgrade_name = upgrade_names[i]
+
+        print(
+            i + 1,
+            "-",
+            upgrade_name,
+            "damage +",
+            Weapon_Upgrades[upgrade_name]["damage_bonus"],
+            "koszt",
+            Weapon_Upgrades[upgrade_name]["price"],
+            "gold"
+        )
+
+    upgrade_choice = int(
+        input("Wybierz ulepszenie: ")
+    )
+
+    chosen_upgrade = (
+        upgrade_names[upgrade_choice - 1]
+    )
+
+    price = Weapon_Upgrades[
+        chosen_upgrade
+    ]["price"]
+
+    if gold >= price:
+
+        inventory["weapons"][
+            chosen_weapon
+        ].append(chosen_upgrade)
+
+        gold -= price
+
+        print(
+            "Dodano",
+            chosen_upgrade,
+            "do broni",
+            chosen_weapon
+        )
+
+    else:
+
+        print(
+            "Nie masz wystarczająco gold"
+        )
+
+    return gold, inventory
+
+
+def sell_weapon(
+    gold,
+    inventory
+):
+
+    if len(inventory["weapons"]) == 0:
+
+        print("Nie masz żadnej broni")
+
+        return gold, inventory
+
+    weapon_names = list(
+        inventory["weapons"].keys()
+    )
+
+    print("Twoje bronie:")
+
+    for i in range(len(weapon_names)):
+
+        weapon_name = weapon_names[i]
+
+        sell_price = (
+            Weapons[weapon_name]["price"] // 3
+        )
+
+        print(
+            i + 1,
+            "-",
+            weapon_name,
+            "sprzedaż za",
+            sell_price,
+            "gold"
+        )
+
+    weapon_choice = int(
+        input(
+            "Którą broń chcesz sprzedać?: "
+        )
+    )
+
+    sold_weapon = (
+        weapon_names[weapon_choice - 1]
+    )
+
+    gained_gold = (
+        Weapons[sold_weapon]["price"] // 3
+    )
+
+    gold += gained_gold
+
+    del inventory["weapons"][sold_weapon]
+
+    print(
+        "Sprzedałeś",
+        sold_weapon,
+        "za",
+        gained_gold,
+        "gold"
+    )
+
+    return gold, inventory
+
+
+def merchant(
+    gold,
+    inventory
+):
+
+    while True:
+
+        print("Spotkałeś handlarza")
+        print("Masz gold:", gold)
+
+        print(
+            "1 - Zielona roślinka koszt 20 gold"
+        )
+
+        print(
+            "2 - Czerwona roślinka koszt 20 gold"
+        )
+
+        print(
+            "3 - Matylda koszt",
+            Weapons["Matylda"]["price"],
+            "gold"
+        )
+
+        print(
+            "4 - Glock-18 koszt",
+            Weapons["Glock-18"]["price"],
+            "gold"
+        )
+
+        print(
+            "5 - MP-7 koszt",
+            Weapons["MP-7"]["price"],
+            "gold"
+        )
+
+        print(
+            "6 - Strzelba pompka koszt",
+            Weapons["Strzelba pompka"]["price"],
+            "gold"
+        )
+
+        print(
+            "7 - Karabin Cobra koszt",
+            Weapons["Karabin Cobra"]["price"],
+            "gold"
+        )
+
+        print(
+            "8 - Karabin snajperski koszt",
+            Weapons["Karabin snajperski"]["price"],
+            "gold"
+        )
+
+        print(
+            "9 - Lightning Hawk koszt",
+            Weapons["Lightning Hawk"]["price"],
+            "gold"
+        )
+
+        print(
+            "10 - Kup ulepszenie do broni"
+        )
+
+        print("11 - Sprzedaj broń")
+        print("12 - Wyjdź")
+
+        choice = input("Co wybierasz? ")
+
+        if choice == "1":
+
+            if gold >= 20:
+
+                inventory["green_herb"] += 1
+
+                gold -= 20
+
+                print(
+                    "Kupiłeś zieloną roślinkę"
+                )
+
+            else:
+
+                print(
+                    "Nie masz wystarczająco gold"
+                )
+
+        elif choice == "2":
+
+            if gold >= 20:
+
+                inventory["red_herb"] += 1
+
+                gold -= 20
+
+                print(
+                    "Kupiłeś czerwoną roślinkę"
+                )
+
+            else:
+
+                print(
+                    "Nie masz wystarczająco gold"
+                )
+
+        elif choice == "3":
+
+            gold, inventory = buy_weapon(
+                gold,
+                inventory,
+                "Matylda"
+            )
+
+        elif choice == "4":
+
+            gold, inventory = buy_weapon(
+                gold,
+                inventory,
+                "Glock-18"
+            )
+
+        elif choice == "5":
+
+            gold, inventory = buy_weapon(
+                gold,
+                inventory,
+                "MP-7"
+            )
+
+        elif choice == "6":
+
+            gold, inventory = buy_weapon(
+                gold,
+                inventory,
+                "Strzelba pompka"
+            )
+
+        elif choice == "7":
+
+            gold, inventory = buy_weapon(
+                gold,
+                inventory,
+                "Karabin Cobra"
+            )
+
+        elif choice == "8":
+
+            gold, inventory = buy_weapon(
+                gold,
+                inventory,
+                "Karabin snajperski"
+            )
+
+        elif choice == "9":
+
+            gold, inventory = buy_weapon(
+                gold,
+                inventory,
+                "Lightning Hawk"
+            )
+
+        elif choice == "10":
+
+            gold, inventory = buy_upgrade(
+                gold,
+                inventory
+            )
+
+        elif choice == "11":
+
+            gold, inventory = sell_weapon(
+                gold,
+                inventory
+            )
+
+        elif choice == "12":
+
+            return gold, inventory
+
+        else:
+
+            print("Zła opcja")
+
+
+def use_herb(
+    player_hp,
+    max_player_hp,
+    inventory
+):
+
+    print("1 - Zielona roślinka")
+    print(
+        "2 - Zielona + czerwona roślinka"
+    )
+
+    print("3 - Nie lecz się")
+
+    choice = input("Wybierz opcję: ")
+
+    if choice == "1":
+
+        if inventory["green_herb"] > 0:
+
+            player_hp += 40
+
+            if player_hp > max_player_hp:
+
+                player_hp = max_player_hp
+
+            inventory["green_herb"] -= 1
+
+            print(
+                "Użyłeś zielonej roślinki"
+            )
+
+        else:
+
+            print(
+                "Nie masz zielonej roślinki"
+            )
+
+    elif choice == "2":
+
+        if (
+            inventory["green_herb"] > 0
+            and inventory["red_herb"] > 0
+        ):
+
+            player_hp = max_player_hp
+
+            inventory["green_herb"] -= 1
+            inventory["red_herb"] -= 1
+
+            print("Masz pełne HP")
+
+        else:
+
+            print(
+                "Nie masz odpowiednich roślinek"
+            )
+
+    return player_hp, inventory
+
+
+def choose_weapon(
+    inventory,
+    player_mana
+):
+
+    if len(inventory["weapons"]) == 0:
+
+        return None
+
+    weapon_names = list(
+        inventory["weapons"].keys()
+    )
+
+    print("Wybierz broń:")
+
+    for i in range(len(weapon_names)):
+
+        weapon_name = weapon_names[i]
+
+        upgrade_damage = 0
+
+        for upgrade in inventory["weapons"][weapon_name]:
+
+            upgrade_damage += (
+                Weapon_Upgrades[upgrade]["damage_bonus"]
+            )
+
+        total_bonus = (
+            Weapons[weapon_name]["damage_bonus"]
+            + upgrade_damage
+        )
+
+        print(
+            i + 1,
+            "-",
+            weapon_name,
+            "damage +",
+            total_bonus,
+            "mana:",
+            Weapons[weapon_name]["mana_cost"],
+            "ulepszenia:",
+            inventory["weapons"][weapon_name]
+        )
+
+    print(
+        len(weapon_names) + 1,
+        "- Bez broni"
+    )
+
+    choice = int(
+        input("Wybierz opcję: ")
+    )
+
+    if (
+        choice
+        == len(weapon_names) + 1
+    ):
+
+        return None
+
+    weapon_name = (
+        weapon_names[choice - 1]
+    )
+
+    if (
+        player_mana
+        >= Weapons[weapon_name]["mana_cost"]
+    ):
+
+        return weapon_name
+
+    print("Nie masz wystarczająco many")
+
+    return None
+
+
+def fight(
+    player,
+    enemy_name,
+    gold,
+    inventory
+):
+
+    player_data = Classes[player]
+    enemy_data = Classes[enemy_name]
+
+    player_hp = player_data["hp"]
+
+    max_player_hp = player_data["hp"]
+
+    enemy_hp = enemy_data["hp"]
+
+    player_mana = player_data["mana"]
+
+    round_counter = 1
+
+    print(player, "vs", enemy_name)
+
+    bosses = [
+        "MR.X",
+        "NEMESIS",
+        "ALBERT WESKER"
+    ]
+
+    mini_bosses = [
+        "Brutal Zombie",
+        "Lizacz",
+        "Chainsaw Zombie",
+        "Annete Birkin",
+        "William Birkin"
+    ]
+
+    if enemy_name in bosses:
+
+        enemy_attack_round = 3
+
+    elif enemy_name in mini_bosses:
+
+        enemy_attack_round = 2
+
+    else:
+
+        enemy_attack_round = 1
+
+    while (
+        player_hp > 0
+        and enemy_hp > 0
+    ):
+
+        print(
+            "===== RUNDA",
+            round_counter,
+            "====="
+        )
+
+        print(player, "HP:", player_hp)
+        print(player, "Mana:", player_mana)
+
+        print(
+            "Zielone roślinki:",
+            inventory["green_herb"]
+        )
+
+        print(
+            "Czerwone roślinki:",
+            inventory["red_herb"]
+        )
+
+        print(
+            "Bronie:",
+            inventory["weapons"]
+        )
+
+        print("1 - Atak")
+        print("2 - Leczenie")
+
+        if player == "Leon S. Kennedy":
+
+            print("3 - Wezwij Ada Wong")
+            print("4 - Wezwij Sherry Birkin")
+
+        action = input("Wybierz akcję: ")
+
+        if action == "2":
+
+            player_hp, inventory = use_herb(
+                player_hp,
+                max_player_hp,
+                inventory
+            )
+
+        else:
+
+            damage = player_data["damage"]
+
+            weapon_name = choose_weapon(
+                inventory,
+                player_mana
+            )
+
+            if weapon_name is not None:
+
+                upgrade_damage = 0
+
+                for upgrade in inventory["weapons"][weapon_name]:
+
+                    upgrade_damage += (
+                        Weapon_Upgrades[upgrade]["damage_bonus"]
+                    )
+
+                damage += (
+                    Weapons[weapon_name]["damage_bonus"]
+                    + upgrade_damage
+                )
+
+                player_mana -= (
+                    Weapons[weapon_name]["mana_cost"]
+                )
+
+                print("Użyłeś:", weapon_name)
+
+            if (
+                random.randint(1, 100)
+                <= player_data.get(
+                    "crit_chance",
+                    0
+                )
+            ):
+
+                damage = player_data[
+                    "crit_damage"
+                ]
+
+                print("Cios krytyczny!")
+
+            enemy_hp -= damage
+
+            print(
+                player,
+                "zadał",
+                damage,
+                "obrażeń"
+            )
+
+            print(
+                enemy_name,
+                "HP:",
+                max(enemy_hp, 0)
+            )
+
+            if enemy_hp <= 0:
+
+                print(
+                    player,
+                    "wygrał walkę"
+                )
+
+                gained_gold = enemy_data.get(
+                    "gold_drop",
+                    0
+                )
+
+                gold += gained_gold
+
+                print(
+                    "Zdobyłeś",
+                    gained_gold,
+                    "gold"
+                )
+
+                print(
+                    "Masz teraz",
+                    gold,
+                    "gold"
+                )
+
+                gold, inventory = merchant(
+                    gold,
+                    inventory
+                )
+
+                return (
+                    gold,
+                    inventory,
+                    True
+                )
+
+        if enemy_hp > 0:
+
+            if (
+                round_counter
+                % enemy_attack_round
+                == 0
+            ):
+
+                enemy_damage = enemy_data[
+                    "damage"
+                ]
+
+                player_hp -= enemy_damage
+
+                print(
+                    enemy_name,
+                    "zadał",
+                    enemy_damage,
+                    "obrażeń"
+                )
+
+                print(
+                    player,
+                    "HP:",
+                    max(player_hp, 0)
+                )
+
+            else:
+
+                print(
+                    enemy_name,
+                    "przygotowuje atak"
+                )
+
+        player_mana += 5
+
+        round_counter += 1
+
+    if player_hp <= 0:
+
+        print(
+            player,
+            "przegrał walkę"
+        )
+
+        return (
+            gold,
+            inventory,
+            False
+        )
+
+    return (
+        gold,
+        inventory,
+        True
+    )
