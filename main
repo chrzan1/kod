@@ -1,0 +1,75 @@
+from funkcje import choose_player, get_story_locations, fight
+
+
+inventory = {
+    "green_herb": 1,
+    "red_herb": 0,
+    "weapons": {}
+}
+
+gold = 0
+
+player = choose_player()
+
+story_locations = get_story_locations(player)
+
+for location in story_locations:
+
+    print("Wchodzisz do:", location)
+
+    from data import Locations
+
+    location_data = Locations[location]
+
+    for enemy in location_data["enemies"]:
+
+        print("Pojawił się:", enemy)
+
+        gold, inventory, alive = fight(
+            player,
+            enemy,
+            gold,
+            inventory
+        )
+
+        if player == "Jill Valentine" and enemy == "Lizacz":
+
+            print("Odblokowano sekretną postać: Carlos Oliveira")
+            print("Czy chcesz zamienić Jill na Carlosa?")
+            print("1 - Tak")
+            print("2 - Nie")
+
+            choice = input("Wybierz opcję: ")
+
+            if choice == "1":
+
+                player = "Carlos Oliveira"
+
+                print("Teraz grasz jako Carlos Oliveira")
+
+        if alive == False:
+
+            print("Koniec gry")
+
+            exit()
+
+    boss = location_data["boss"]
+
+    print("Pojawił się boss:", boss)
+
+    gold, inventory, alive = fight(
+        player,
+        boss,
+        gold,
+        inventory
+    )
+
+    if alive == False:
+
+        print("Koniec gry")
+
+        exit()
+
+    print("Ukończyłeś miejscówkę:", location)
+
+print("Koniec gry")
