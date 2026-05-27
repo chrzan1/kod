@@ -1,0 +1,354 @@
+Classes = {
+
+    "Snake eater": {
+        "type": "playable",
+        "hp": 200,
+        "damage": 30,
+        "mana": 50,
+        "crit_damage": 45,
+        "crit_chance": 20,
+        "heal_chance": 20,
+        "heal_amount": 25,
+        "invisible_chance": 15,
+        "invisible_duration": 2
+    },
+
+    "Leon S. Kennedy": {
+        "type": "playable",
+        "hp": 150,
+        "damage": 70,
+        "mana": 60,
+        "crit_damage": 60,
+        "crit_chance": 35,
+        "heal_chance": 10,
+        "heal_amount": 15,
+        "roundhouse_kick_chance": 20,
+        "roundhouse_kick_damage": 120
+    },
+
+    "Chris Redfield": {
+        "type": "playable",
+        "hp": 200,
+        "damage": 70,
+        "mana": 60,
+        "crit_damage": 75,
+        "crit_chance": 25,
+        "heal_chance": 15,
+        "heal_amount": 20,
+        "straight_punch_chance": 30,
+        "straight_punch_damage": 110,
+        "hook_punch_chance": 20,
+        "hook_punch_damage": 140
+    },
+
+    "Jill Valentine": {
+        "type": "playable",
+        "hp": 100,
+        "damage": 50,
+        "mana": 80,
+        "crit_damage": 30,
+        "crit_chance": 20,
+        "heal_chance": 75,
+        "heal_amount": 70,
+        "dodge_chance": 45
+    },
+
+    "Ethan Winters": {
+        "type": "playable",
+        "hp": 200,
+        "damage": 40,
+        "mana": 70,
+        "crit_damage": 50,
+        "crit_chance": 28,
+        "heal_chance": 12,
+        "heal_amount": 18,
+        "regeneration_chance": 40,
+        "regeneration_amount": 50
+    },
+    
+    "Carlos Oliveira": {
+    "type": "secret_playable",
+    "hp": 200,
+    "damage": 70,
+    "mana": 60,
+    "crit_damage": 75,
+    "crit_chance": 25,
+    "heal_chance": 15,
+    "heal_amount": 20,
+    "straight_punch_chance": 30,
+    "straight_punch_damage": 110,
+    "hook_punch_chance": 20,
+    "hook_punch_damage": 140
+},
+
+    "Ada Wong": {
+        "type": "support",
+        "hp": 130,
+        "damage": 28,
+        "mana": 110,
+        "crit_damage": 40,
+        "crit_chance": 15,
+        "heal_chance": 45,
+        "heal_amount": 35,
+        "help_leon_chance": 50,
+        "help_leon_damage": 60
+    },
+
+    "Sherry Birkin": {
+        "type": "support",
+        "hp": 50,
+        "damage": 10,
+        "mana": 75,
+        "crit_damage": 15,
+        "crit_chance": 30,
+        "heal_chance": 18,
+        "heal_amount": 22,
+        "help_against_birkin_chance": 65,
+        "help_against_birkin_heal": 40
+    },
+
+    "Zombie mezczyzna": {
+        "type": "enemy",
+        "hp": 160,
+        "damage": 38,
+        "mana": 45,
+        "gold_drop": 60,
+        "crit_damage": 55,
+        "crit_chance": 18,
+        "heal_chance": 20,
+        "heal_amount": 30
+    },
+
+    "Zombie kobieta": {
+        "type": "enemy",
+        "hp": 120,
+        "damage": 34,
+        "mana": 30,
+        "gold_drop": 42,
+        "crit_damage": 48,
+        "crit_chance": 22,
+        "heal_chance": 8,
+        "heal_amount": 12
+    },
+
+    "Brutal Zombie": {
+        "type": "enemy",
+        "hp": 250,
+        "damage": 60,
+        "mana": 20,
+        "gold_drop": 120,
+        "crit_damage": 70,
+        "crit_chance": 20,
+        "heal_chance": 10,
+        "heal_amount": 25,
+        "stun_hit_chance": 25,
+        "stun_duration": 1
+    },
+
+    "Lizacz": {
+        "type": "enemy",
+        "hp": 220,
+        "damage": 60,
+        "mana": 150,
+        "gold_drop": 140,
+        "crit_damage": 65,
+        "crit_chance": 15,
+        "heal_chance": 40,
+        "heal_amount": 50,
+        "jump_attack_chance": 30,
+        "bleeding_damage": 5,
+        "bleeding_duration": 2
+    },
+
+    "Chainsaw Zombie": {
+        "type": "enemy",
+        "hp": 320,
+        "damage": 100,
+        "mana": 30,
+        "gold_drop": 160,
+        "crit_damage": 120,
+        "crit_chance": 15,
+        "heal_chance": 15,
+        "heal_amount": 35,
+        "paralyze_attack_chance": 10,
+        "paralyze_duration": 2
+    },
+
+    "Annete Birkin": {
+        "type": "enemy",
+        "hp": 75,
+        "damage": 55,
+        "mana": 100,
+        "gold_drop": 180,
+        "crit_damage": 60,
+        "crit_chance": 30,
+        "heal_chance": 50,
+        "heal_amount": 70,
+        "battle_heal_chance": 40,
+        "battle_heal_amount": 50
+    },
+
+    "William Birkin": {
+        "type": "enemy",
+        "hp": 240,
+        "damage": 100,
+        "mana": 80,
+        "gold_drop": 200,
+        "crit_damage": 100,
+        "crit_chance": 40,
+        "heal_chance": 12,
+        "heal_amount": 25,
+        "rage_chance": 30,
+        "rage_bonus_damage": 10
+    },
+
+    "MR.X": {
+        "type": "enemy",
+        "hp": 500,
+        "damage": 100,
+        "mana": 200,
+        "gold_drop": 500,
+        "crit_damage": 140,
+        "crit_chance": 35,
+        "heal_chance": 15,
+        "heal_amount": 60,
+        "throw_object_chance": 30,
+        "throw_object_damage": 20
+    },
+
+    "NEMESIS": {
+        "type": "enemy",
+        "hp": 550,
+        "damage": 110,
+        "mana": 300,
+        "gold_drop": 650,
+        "crit_damage": 150,
+        "crit_chance": 30,
+        "heal_chance": 45,
+        "heal_amount": 80,
+        "poison_attack_chance": 35,
+        "poison_damage": 10,
+        "poison_duration": 2
+    },
+
+    "ALBERT WESKER": {
+        "type": "enemy",
+        "hp": 300,
+        "damage": 90,
+        "mana": 100,
+        "gold_drop": 1000,
+        "crit_damage": 100,
+        "crit_chance": 25,
+        "heal_chance": 20,
+        "heal_amount": 100,
+        "dodge_chance": 50
+    }
+}
+
+
+Weapons = {
+
+    "Matylda": {
+        "damage_bonus": 5,
+        "mana_cost": 5,
+        "price": 40
+    },
+
+    "Glock-18": {
+        "damage_bonus": 8,
+        "mana_cost": 8,
+        "price": 60
+    },
+
+    "MP-7": {
+        "damage_bonus": 12,
+        "mana_cost": 12,
+        "price": 90
+    },
+
+    "Strzelba pompka": {
+        "damage_bonus": 14,
+        "mana_cost": 16,
+        "price": 110
+    },
+
+    "Karabin Cobra": {
+        "damage_bonus": 15,
+        "mana_cost": 15,
+        "price": 120
+    },
+
+    "Karabin snajperski": {
+        "damage_bonus": 18,
+        "mana_cost": 18,
+        "price": 145
+    },
+
+    "Lightning Hawk": {
+        "damage_bonus": 20,
+        "mana_cost": 20,
+        "price": 160
+    }
+}
+
+
+Weapon_Upgrades = {
+
+    "Tłumik": {
+        "damage_bonus": 4,
+        "price": 10
+    },
+
+    "Celownik": {
+        "damage_bonus": 8,
+        "price": 20
+    },
+
+    "Laser": {
+        "damage_bonus": 12,
+        "price": 30
+    }
+}
+
+
+Locations = {
+
+    "Posterunek policji RPD": {
+        "enemies": [
+            "Zombie kobieta",
+            "Zombie mezczyzna",
+            "Lizacz"
+        ],
+        "boss": "MR.X"
+    },
+
+    "Laboratorium Umbrella": {
+        "enemies": [
+            "Zombie mezczyzna",
+            "Zombie kobieta",
+            "Lizacz",
+            "Annete Birkin",
+            "William Birkin"
+        ],
+        "boss": "MR.X"
+    },
+
+    "Ulice Raccoon City": {
+        "enemies": [
+            "Zombie kobieta",
+            "Zombie mezczyzna",
+            "Lizacz"
+        ],
+        "boss": "NEMESIS"
+    },
+
+    "Posiadłość Spencera": {
+        "enemies": [
+            "Brutal Zombie",
+            "Chainsaw Zombie",
+            "Zombie mezczyzna",
+            "Zombie kobieta"
+        ],
+        "boss": "ALBERT WESKER"
+    }
+}
